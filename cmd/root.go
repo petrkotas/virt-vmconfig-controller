@@ -16,8 +16,12 @@ package cmd
 
 import (
 	log "github.com/Sirupsen/logrus"
+	"github.com/petrkotas/virt-vmconfig-controller/pkg/client"
 	"github.com/spf13/cobra"
 )
+
+var KubeConfig string
+var MasterUrl string
 
 // RootCmd call controller without any params, it will start with defaults
 var RootCmd = &cobra.Command{
@@ -28,7 +32,11 @@ var RootCmd = &cobra.Command{
 	state: started.`,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Info("Called the virt-controller")
+		log.WithFields(log.Fields{
+			"kubeconfig": KubeConfig,
+			"masterurl":  MasterUrl,
+		}).Info("Called the virt-controller")
+		client.Run(KubeConfig, MasterUrl)
 	},
 }
 
@@ -37,4 +45,9 @@ func Run() {
 	if err := RootCmd.Execute(); err != nil {
 		log.Fatal("Somethig very vad happened")
 	}
+}
+
+func init() {
+	RootCmd.PersistentFlags().StringVar(&KubeConfig, "kubeconfig", "", "/path/to/kubeconfig")
+	RootCmd.PersistentFlags().StringVar(&MasterUrl, "master", "", "https://master.server.url")
 }
