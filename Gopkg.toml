@@ -31,8 +31,8 @@
 
 [[constraint]]
   branch = "master"
-  name = "k8s.io/apimachinery"
+  name = "k8s.io/client-go"
 
 [[constraint]]
-  name = "k8s.io/client-go"
-  version = "4.0.0"
+  branch = "master"
+  name = "k8s.io/apimachinery"

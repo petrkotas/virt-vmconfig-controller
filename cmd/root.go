@@ -21,7 +21,6 @@ import (
 )
 
 var KubeConfig string
-var MasterUrl string
 
 // RootCmd call controller without any params, it will start with defaults
 var RootCmd = &cobra.Command{
@@ -34,9 +33,8 @@ var RootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithFields(log.Fields{
 			"kubeconfig": KubeConfig,
-			"masterurl":  MasterUrl,
 		}).Info("Called the virt-controller")
-		client.Run(KubeConfig, MasterUrl)
+		client.Run(KubeConfig)
 	},
 }
 
@@ -49,5 +47,4 @@ func Run() {
 
 func init() {
 	RootCmd.PersistentFlags().StringVar(&KubeConfig, "kubeconfig", "", "/path/to/kubeconfig")
-	RootCmd.PersistentFlags().StringVar(&MasterUrl, "master", "", "https://master.server.url")
 }

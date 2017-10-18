@@ -1,14 +1,14 @@
 package client
 
 import (
-	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/client-go/kubernetes"
 	log "github.com/Sirupsen/logrus"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/tools/clientcmd"
 )
 
-func Run(config string, url string) {
-	cfg, err := clientcmd.BuildConfigFromFlags(url, config)
+func Run(config string) {
+	cfg, err := clientcmd.BuildConfigFromFlags("", config)
 	if err != nil {
 		log.Error("Cannot connect to kubernetes.")
 	}
@@ -23,7 +23,7 @@ func Run(config string, url string) {
 	for _, pod := range pods.Items {
 		log.WithFields(
 			log.Fields{
-				"pod": pod.Name,
+				"pod":       pod.Name,
 				"namespace": pod.Namespace,
 			}).Info("pod")
 	}
